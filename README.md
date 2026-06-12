@@ -1,7 +1,7 @@
 # 📋 User Form (React + MUI + React Hook Form)
 
 A modern and minimal user form built with **React, TypeScript, Material UI, and React Hook Form**.  
-This project demonstrates scalable form handling, clean UI integration, and modern React patterns.
+This project demonstrates clean form handling, strong TypeScript typing, and smooth UI integration using MUI components.
 
 ---
 
@@ -13,18 +13,19 @@ This project demonstrates scalable form handling, clean UI integration, and mode
 - React Hook Form
 - React Toastify
 - MUI X Date Pickers
-- Day.js (with Jalali support via jalaliday)
+- Day.js (with Jalali support via `jalaliday`)
 
 ---
 
 ## ✨ Features
 
-- Controlled form handling with React Hook Form
-- Clean integration with MUI using `Controller`
-- Date Picker support (Jalali calendar enabled)
-- Toast notifications on successful submission
-- Fully typed form structure with TypeScript
-- Scalable form structure using React Hook Form
+- Form handling using React Hook Form
+- Clean integration with MUI via `Controller`
+- Validation for required fields and constraints
+- Date Picker with Jalali calendar support
+- Toast notifications for user feedback
+- Fully typed form using TypeScript
+- Modular and maintainable structure
 
 ---
 
@@ -40,16 +41,15 @@ This form includes:
 
 ---
 
+## 📸 Preview
+
+`./public/preview.png`
+
+---
+
 ## 📦 Installation
 
 ```bash
 git clone https://github.com/matinroghani/user-form.git
 cd user-form
 npm install
-
----
-
-## ▶️ Run Project
-
-```bash
-npm run dev
