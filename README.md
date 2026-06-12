@@ -5,6 +5,12 @@ This project demonstrates clean form handling, strong TypeScript typing, and smo
 
 ---
 
+## 📸 Preview
+
+![Preview](/public/preview.png)
+
+---
+
 ## 🚀 Tech Stack
 
 - React
@@ -38,12 +44,6 @@ This form includes:
 - Gender (Radio Group)
 - Date of Birth (DatePicker)
 - Accept Terms & Conditions (Checkbox)
-
----
-
-## 📸 Preview
-
-(/public/preview.png)
 
 ---
 
