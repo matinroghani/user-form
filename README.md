@@ -43,7 +43,7 @@ This form includes:
 
 ## 📸 Preview
 
-`./public/preview.png`
+(/public/preview.png)
 
 ---
 
