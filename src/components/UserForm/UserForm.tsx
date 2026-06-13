@@ -4,6 +4,7 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Radio,
@@ -11,20 +12,29 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import type { FormData } from "../../types/types";
+
 import { DatePicker } from "@mui/x-date-pickers";
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
+
+import { userFormSchema } from "../../validations/userFormSchema";
+import type { UserFormDate } from "../../validations/userFormSchema";
 
 export default function UserForm() {
-  const { control, handleSubmit } = useForm<FormData>({
-    mode: "onSubmit",
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormDate>({
+    resolver: zodResolver(userFormSchema),
     defaultValues: {
       name: "",
-      country: "Iran",
+      country: "",
       gender: "",
+      dob: dayjs(),  
       isAgree: false,
-      dob: null,
     },
   });
 
@@ -39,137 +49,103 @@ export default function UserForm() {
         background: "#f5f5f5",
       }}
     >
-      <Card
-        sx={{
-          width: "100%",
-          maxWidth: 520,
-          p: 4,
-          borderRadius: 3,
-          boxShadow: 3,
-        }}
-      >
+      <Card sx={{ width: "100%", maxWidth: 520, p: 4, borderRadius: 3 }}>
         <form
           style={{ display: "grid", gap: 16 }}
           onSubmit={handleSubmit((data) => {
-            try {
-              console.log(data);
-              toast.success("Form submitted successfuly", {
-                position: "bottom-right",
-                autoClose: 2000,
-              });
-            } catch {
-              toast.error("Something went wron!");
-            }
+            console.log(data);
+            toast.success("Form submitted successfully");
           })}
         >
-          {/* TEXT-INPUT */}
+          {/* NAME */}
           <Controller
             name="name"
             control={control}
-            rules={{
-              required: "Name is required",
-              minLength: {
-                value: 3,
-                message: "Name must be at least 3 characters",
-              },
-            }}
             render={({ field }) => (
-              <TextField {...field} label="full name" variant="outlined" />
+              <TextField
+                {...field}
+                label="Full name"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
             )}
           />
 
-          {/* SELECT INPUT */}
+          {/* COUNTRY */}
           <Controller
             name="country"
             control={control}
-            rules={{ required: "Country is required" }}
             render={({ field }) => (
-              <FormControl fullWidth>
-                <InputLabel id="country_label">Current Country</InputLabel>
-                <Select
-                  {...field}
-                  labelId="country_label"
-                  label="Current Country"
-                >
+              <FormControl error={!!errors.country}>
+                <InputLabel>Country</InputLabel>
+                <Select {...field} label="Country">
                   <MenuItem value="Iran">Iran</MenuItem>
-                  <MenuItem value="Us">United States</MenuItem>
-                  <MenuItem value="Deutschland">Deutschland</MenuItem>
+                  <MenuItem value="US">United States</MenuItem>
+                  <MenuItem value="Germany">Germany</MenuItem>
                 </Select>
+                <FormHelperText>{errors.country?.message}</FormHelperText>
               </FormControl>
             )}
           />
 
-          {/* RADIO BUTTON */}
+          {/* GENDER */}
           <Controller
             name="gender"
             control={control}
-            rules={{ required: "Gender is required" }}
             render={({ field }) => (
-              <FormControl>
-                <InputLabel shrink>Gender</InputLabel>
+              <FormControl error={!!errors.gender}>
                 <RadioGroup {...field}>
-                  <FormControlLabel
-                    value="male"
-                    control={<Radio />}
-                    label="male"
-                  />
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio />}
-                    label="female"
-                  />
+                  <FormControlLabel value="male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="female" control={<Radio />} label="Female" />
                 </RadioGroup>
+                <FormHelperText>{errors.gender?.message}</FormHelperText>
               </FormControl>
             )}
           />
 
-          {/* DATE PICKER */}
+          {/* DOB */}
           <Controller
             name="dob"
             control={control}
-            rules={{
-              required: "Date of birth is required",
-            }}
             render={({ field }) => (
               <DatePicker
-                label="Date of Birthday"
+                label="Date of birth"
                 value={field.value}
-                onChange={(value) => field.onChange(value)}
+                onChange={(val) => field.onChange(val)}
                 format="YYYY/MM/DD"
                 slotProps={{
                   textField: {
-                    fullWidth: true,
-                    variant: "outlined",
+                    error: !!errors.dob,
+                    helperText: errors.dob?.message,
                   },
                 }}
               />
             )}
           />
 
-          {/* CHECKBOX */}
+          {/* TERMS */}
           <Controller
             name="isAgree"
             control={control}
-            rules={{
-              validate: (value) =>
-                value === true || "You must accept the terms",
-            }}
             render={({ field }) => (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                  />
-                }
-                label="Accepted the Terms and Conditions"
-              />
+              <FormControl error={!!errors.isAgree}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                    />
+                  }
+                  label="I accept terms"
+                />
+                <FormHelperText>{errors.isAgree?.message}</FormHelperText>
+              </FormControl>
             )}
           />
 
-          {/* SUBMIT BUTTON */}
-          <Button variant="outlined" type="submit">
-            send Form
+          {/* SUBMIT */}
+          <Button type="submit" variant="contained">
+            Submit
           </Button>
         </form>
       </Card>
